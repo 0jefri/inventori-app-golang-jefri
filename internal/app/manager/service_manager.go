@@ -8,7 +8,7 @@ type ServiceManager interface {
 	UserService() service.UserService
 	AuthService() service.AuthService
 	ProductService() service.ProductService
-	// TransactionService() service.TransactionService
+	TransactionService() service.TransactionService
 	// BillService() service.BillService
 	// ContactService() service.ContactService
 	// UserPictureService() service.UserPictureService
@@ -37,9 +37,9 @@ func (m *serviceManager) ProductService() service.ProductService {
 	return service.NewProductService(m.repoManager.ProductRepo())
 }
 
-// func (m *serviceManager) TransactionService() service.TransactionService {
-// 	return service.NewTransactionService(m.repoManager.TransactionRepo(), m.repoManager.UserRepo(), m.repoManager.CardRepo())
-// }
+func (m *serviceManager) TransactionService() service.TransactionService {
+	return service.NewTransactionService(m.repoManager.TransactionRepo(), m.repoManager.ProductRepo())
+}
 
 // func (m *serviceManager) BillService() service.BillService {
 // 	return service.NewBillService(m.repoManager.BillRepo(), m.repoManager.UserRepo(), m.repoManager.BillDetailsRepo())

@@ -7,7 +7,7 @@ import (
 type RepoManager interface {
 	UserRepo() repository.UserRepository
 	ProductRepo() repository.ProductRepository
-	// TransactionRepo() repository.TransactionRepository
+	TransactionRepo() repository.TransactionRepository
 	// BillRepo() repository.BillRepository
 	// ContactRepo() repository.ContactRepository
 	// FileRepo() repository.FileRepository
@@ -34,9 +34,9 @@ func (m *repoManager) ProductRepo() repository.ProductRepository {
 	return repository.NewProductRepository(m.infraManager.Conn())
 }
 
-// func (m *repoManager) TransactionRepo() repository.TransactionRepository {
-// 	return repository.NewTransactionRepository(m.infraManager.Conn())
-// }
+func (m *repoManager) TransactionRepo() repository.TransactionRepository {
+	return repository.NewTransactionRepository(m.infraManager.Conn())
+}
 
 // func (m *repoManager) BillRepo() repository.BillRepository {
 // 	return repository.NewBillRepository(m.infraManager.Conn())
