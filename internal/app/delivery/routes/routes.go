@@ -49,10 +49,10 @@ func SetupRouter(router *gin.Engine) error {
 				// Product
 				users.POST("/product", productController.AddProduct)
 				users.GET("/product/:id", productController.FindProduct)
-				users.GET("/products", productController.FindAllProducts)
+				users.GET("/products/", productController.FindAllProducts)
 				users.DELETE("/product/:id", productController.DeleteProduct)
 				users.PUT("/product/:id", productController.UpdateProduct)
-				users.GET("/product/name", productController.FindProductByName)
+				users.GET("/products", productController.FindProductByName)
 
 				// Contact
 				// users.POST("/:id/contacts", contactController.AddContact)
