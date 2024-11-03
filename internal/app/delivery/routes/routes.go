@@ -16,6 +16,8 @@ func SetupRouter(router *gin.Engine) error {
 
 	// User Controller
 	userController := controller.NewUserController(repoManager.UserService(), repoManager.AuthService())
+	//product controller
+	productController := controller.NewProductController(repoManager.ProductService())
 	// Transaction Controller
 	// transactionController := controller.NewTransactionController(repoManager.TransactionService())
 	// Bill Controller
@@ -43,6 +45,15 @@ func SetupRouter(router *gin.Engine) error {
 				// users.POST("/:id/upload", userController.UploadPicture)
 				// users.GET("/:id/download", userController.DownloadPicture)
 				users.DELETE("/:id", userController.DeleteUser)
+
+				// Product
+				users.POST("/product", productController.AddProduct)
+				users.GET("/product/:id", productController.FindProduct)
+				users.GET("/products", productController.FindAllProducts)
+				users.DELETE("/product/:id", productController.DeleteProduct)
+				users.PUT("/product/:id", productController.UpdateProduct)
+				users.GET("/product/name", productController.FindProductByName)
+
 				// Contact
 				// users.POST("/:id/contacts", contactController.AddContact)
 				// users.GET("/:id/contacts", contactController.FindAllContacts)

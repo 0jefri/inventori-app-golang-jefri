@@ -7,10 +7,12 @@ const (
 	StatusBadRequest     = "Bad Request"
 	StatusSuccess        = "Success"
 	StatusUnauthorized   = "Unauthorized"
+	StatusNotFound       = "Not Found"
 )
 
 var (
 	ErrNotFound                 = errors.New("data not found")
+	ErrProductNameAlreadyExist  = errors.New("product name already exist")
 	ErrUsernameAlreadyExist     = errors.New("username already exist")
 	ErrEmailAlreadyExist        = errors.New("email already exist")
 	ErrPhoneNumberAlreadyExist  = errors.New("phone number already exist")

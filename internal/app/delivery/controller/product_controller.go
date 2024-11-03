@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/inventori-app-jeff/internal/app/service"
@@ -16,24 +15,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserController struct {
-	service service.UserService
-	auth    service.AuthService
+type ProductController struct {
+	service service.ProductService
 }
 
-func NewUserController(service service.UserService, auth service.AuthService) *UserController {
-	return &UserController{
+func NewProductController(service service.ProductService) *ProductController {
+	return &ProductController{
 		service: service,
-		auth:    auth,
 	}
 }
 
-func (ctr *UserController) Registration(c *gin.Context) {
-	payload := model.User{}
+func (ctr *ProductController) AddProduct(c *gin.Context) {
+	payload := model.Product{}
 
 	payload.ID = common.GenerateUUID()
-	payload.RegistrationDate = time.Now()
-	payload.LastLogin = time.Now()
+	// payload.RegistrationDate = time.Now()
+	// payload.LastLogin = time.Now()
 
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
@@ -44,7 +41,7 @@ func (ctr *UserController) Registration(c *gin.Context) {
 		return
 	}
 
-	data, err := ctr.service.RegisterNewUser(&payload)
+	data, err := ctr.service.RegisterNewProduct(&payload)
 
 	if err != nil {
 		if errors.Is(err, exception.ErrFailedCreate) {
@@ -67,15 +64,15 @@ func (ctr *UserController) Registration(c *gin.Context) {
 	c.JSON(http.StatusCreated, dto.Response{
 		Code:    http.StatusCreated,
 		Status:  exception.StatusSuccess,
-		Message: "Register Successful",
+		Message: "Add Product Successful",
 		Data:    data,
 	})
 }
 
-func (ctr *UserController) FindUser(c *gin.Context) {
+func (ctr *ProductController) FindProduct(c *gin.Context) {
 	id := c.Param("id")
 
-	data, err := ctr.service.FindUserByID(id)
+	data, err := ctr.service.FindProductByID(id)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -98,12 +95,12 @@ func (ctr *UserController) FindUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.Response{
 		Code:    http.StatusOK,
 		Status:  exception.StatusSuccess,
-		Message: "Get User By ID",
+		Message: "Get Product By ID",
 		Data:    data,
 	})
 }
 
-func (ctr *UserController) FindAllUsers(c *gin.Context) {
+func (ctr *ProductController) FindAllProducts(c *gin.Context) {
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 
 	if err != nil {
@@ -115,7 +112,7 @@ func (ctr *UserController) FindAllUsers(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(c.Get("username"))
+	fmt.Println(c.Get("Productname"))
 
 	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
 
@@ -133,7 +130,7 @@ func (ctr *UserController) FindAllUsers(c *gin.Context) {
 		Limit: limit,
 	}
 
-	data, paging, err := ctr.service.FindAllUser(paginationParam)
+	data, paging, err := ctr.service.FindAllProduct(paginationParam)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -156,16 +153,16 @@ func (ctr *UserController) FindAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.ResponseWithPaging{
 		Code:    http.StatusOK,
 		Status:  exception.StatusSuccess,
-		Message: "Get All User",
+		Message: "Get All Product",
 		Data:    data,
 		Paging:  *paging,
 	})
 }
 
-func (ctr *UserController) DeleteUser(c *gin.Context) {
+func (ctr *ProductController) DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 
-	data, err := ctr.service.RemoveUser(id)
+	data, err := ctr.service.RemoveProduct(id)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -197,15 +194,15 @@ func (ctr *UserController) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.Response{
 		Code:    http.StatusOK,
 		Status:  exception.StatusSuccess,
-		Message: "Delete User By ID",
+		Message: "Delete Product By ID",
 		Data:    data,
 	})
 }
 
-func (ctr *UserController) UpdateUser(c *gin.Context) {
+func (ctr *ProductController) UpdateProduct(c *gin.Context) {
 	id := c.Param("id")
 
-	payload := model.User{}
+	payload := model.Product{}
 
 	payload.ID = id
 
@@ -218,7 +215,7 @@ func (ctr *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	data, err := ctr.service.UpdateUserByID(id, &payload)
+	data, err := ctr.service.UpdateProductByID(id, &payload)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -250,58 +247,46 @@ func (ctr *UserController) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.Response{
 		Code:    http.StatusOK,
 		Status:  exception.StatusSuccess,
-		Message: "Update User By ID",
+		Message: "Update Product By ID",
 		Data:    data,
 	})
 }
 
-func (ctr *UserController) Login(c *gin.Context) {
-	payload := dto.Auth{}
+func (ctr *ProductController) FindProductByName(c *gin.Context) {
+	name := c.Query("name")
 
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
-			"code":    http.StatusBadRequest,
-			"status":  exception.StatusBadRequest,
-			"message": exception.FieldErrors(err),
+	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Status:  exception.StatusInternalServer,
+			Message: exception.ErrInvalidPage.Error(),
 		})
 		return
 	}
 
-	data, err := ctr.auth.Login(payload.Username, payload.Password)
-
+	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	if err != nil {
-		if errors.Is(err, exception.ErrInvalidParseToken) {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-				Code:    http.StatusInternalServerError,
-				Status:  exception.StatusInternalServer,
-				Message: exception.ErrInvalidParseToken.Error(),
-			})
-			return
-		}
+		c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Status:  exception.StatusInternalServer,
+			Message: exception.ErrInvalidPage.Error(),
+		})
+		return
+	}
 
-		if errors.Is(err, exception.ErrInvalidTokenStringMethod) {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-				Code:    http.StatusInternalServerError,
-				Status:  exception.StatusInternalServer,
-				Message: exception.ErrInvalidTokenStringMethod.Error(),
-			})
-			return
-		}
+	paginationParam := dto.PaginationParam{
+		Page:  page,
+		Limit: limit,
+	}
 
-		if errors.Is(err, exception.ErrInvalidTokenMapclaims) {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-				Code:    http.StatusInternalServerError,
-				Status:  exception.StatusInternalServer,
-				Message: exception.ErrInvalidTokenMapclaims.Error(),
-			})
-			return
-		}
-
-		if errors.Is(err, exception.ErrFailedCreateToken) {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-				Code:    http.StatusInternalServerError,
-				Status:  exception.StatusInternalServer,
-				Message: exception.ErrFailedCreateToken.Error(),
+	data, paging, err := ctr.service.FindProductsByName(paginationParam, name)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.AbortWithStatusJSON(http.StatusNotFound, dto.ErrorResponse{
+				Code:    http.StatusNotFound,
+				Status:  exception.StatusNotFound,
+				Message: "Product Not Found",
 			})
 			return
 		}
@@ -314,10 +299,11 @@ func (ctr *UserController) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dto.TokenResponse{
+	c.JSON(http.StatusOK, dto.ResponseWithPaging{
 		Code:    http.StatusOK,
 		Status:  exception.StatusSuccess,
-		Message: "Login Successful",
-		Token:   data,
+		Message: "Get Products By Name",
+		Data:    data,
+		Paging:  *paging,
 	})
 }
