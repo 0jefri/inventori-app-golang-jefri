@@ -10,7 +10,6 @@ require (
 	github.com/google/uuid v1.3.1
 	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.2.1
-	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.17.0
 	golang.org/x/crypto v0.14.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
