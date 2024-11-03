@@ -61,17 +61,15 @@ func (s *userService) RegisterNewUser(payload *model.User) (*dto.UserResponse, e
 	user, err := s.repo.Create(payload)
 
 	userResponse := dto.UserResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
-		Password:    user.Password,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		PhoneNumber: user.PhoneNumber,
-		// Wallet:           user.Wallet,
+		ID:               user.ID,
+		Username:         user.Username,
+		Email:            user.Email,
+		Password:         user.Password,
+		FirstName:        user.FirstName,
+		LastName:         user.LastName,
+		PhoneNumber:      user.PhoneNumber,
 		RegistrationDate: user.RegistrationDate,
-		// ProfilePicture:   user.ProfilePicture,
-		LastLogin: time.Now(),
+		LastLogin:        time.Now(),
 	}
 
 	return &userResponse, err
@@ -86,17 +84,15 @@ func (s *userService) FindUserByID(id string) (*dto.UserResponse, error) {
 	}
 
 	userResponse := dto.UserResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
-		Password:    user.Password,
-		FirstName:   user.FirstName,
-		LastName:    user.Username,
-		PhoneNumber: user.PhoneNumber,
-		// Wallet:           user.Wallet,
+		ID:               user.ID,
+		Username:         user.Username,
+		Email:            user.Email,
+		Password:         user.Password,
+		FirstName:        user.FirstName,
+		LastName:         user.Username,
+		PhoneNumber:      user.PhoneNumber,
 		RegistrationDate: user.RegistrationDate,
-		// ProfilePicture:   user.ProfilePicture,
-		LastLogin: user.LastLogin,
+		LastLogin:        user.LastLogin,
 	}
 
 	return &userResponse, err
@@ -115,19 +111,14 @@ func (s *userService) FindAllUser(requestPaging dto.PaginationParam, queries ...
 	for _, user := range users {
 
 		userResponse := dto.UserResponse{
-			ID:          user.ID,
-			Username:    user.Username,
-			Email:       user.Email,
-			FirstName:   user.FirstName,
-			LastName:    user.Username,
-			PhoneNumber: user.PhoneNumber,
-			// Wallet: model.Wallet{
-			// 	Name:    user.Wallet.Name,
-			// 	Balance: user.Wallet.Balance,
-			// },
+			ID:               user.ID,
+			Username:         user.Username,
+			Email:            user.Email,
+			FirstName:        user.FirstName,
+			LastName:         user.Username,
+			PhoneNumber:      user.PhoneNumber,
 			RegistrationDate: user.RegistrationDate,
-			// ProfilePicture:   user.ProfilePicture,
-			LastLogin: user.LastLogin,
+			LastLogin:        user.LastLogin,
 		}
 
 		userResponses = append(userResponses, &userResponse)
@@ -151,19 +142,14 @@ func (s *userService) RemoveUser(id string) (*dto.UserResponse, error) {
 	}
 
 	userResponse := dto.UserResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
-		FirstName:   user.FirstName,
-		LastName:    user.Username,
-		PhoneNumber: user.PhoneNumber,
-		// Wallet: model.Wallet{
-		// 	Name:    user.Wallet.Name,
-		// 	Balance: user.Wallet.Balance,
-		// },
+		ID:               user.ID,
+		Username:         user.Username,
+		Email:            user.Email,
+		FirstName:        user.FirstName,
+		LastName:         user.Username,
+		PhoneNumber:      user.PhoneNumber,
 		RegistrationDate: user.RegistrationDate,
-		// ProfilePicture:   user.ProfilePicture,
-		LastLogin: user.LastLogin,
+		LastLogin:        user.LastLogin,
 	}
 
 	return &userResponse, err
@@ -184,19 +170,14 @@ func (s *userService) UpdateUserByID(id string, payload *model.User) (*dto.UserR
 	}
 
 	userResponse := dto.UserResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		Email:       user.Email,
-		FirstName:   user.FirstName,
-		LastName:    user.Username,
-		PhoneNumber: user.PhoneNumber,
-		// Wallet: model.Wallet{
-		// 	Name:    user.Wallet.Name,
-		// 	Balance: user.Wallet.Balance,
-		// },
+		ID:               user.ID,
+		Username:         user.Username,
+		Email:            user.Email,
+		FirstName:        user.FirstName,
+		LastName:         user.Username,
+		PhoneNumber:      user.PhoneNumber,
 		RegistrationDate: user.RegistrationDate,
-		// ProfilePicture:   user.ProfilePicture,
-		LastLogin: user.LastLogin,
+		LastLogin:        user.LastLogin,
 	}
 
 	return &userResponse, err

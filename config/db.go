@@ -9,7 +9,6 @@ import (
 	"github.com/inventori-app-jeff/internal/model"
 	_ "github.com/lib/pq"
 
-	// "github.com/sakupay-apps/internal/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

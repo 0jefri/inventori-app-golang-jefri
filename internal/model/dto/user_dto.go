@@ -2,7 +2,6 @@ package dto
 
 import (
 	"time"
-	// "github.com/sakupay-apps/internal/model"
 )
 
 type UserResponse struct {

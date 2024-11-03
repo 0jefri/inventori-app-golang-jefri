@@ -83,18 +83,3 @@ func ValidationMiddleware() gin.HandlerFunc {
 		}
 	}
 }
-
-// Middleware untuk memeriksa otorisasi admin
-func AdminAuthMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		role := c.GetString("role")
-
-		if role != "admin" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
-			c.Abort()
-			return
-		}
-
-		c.Next()
-	}
-}

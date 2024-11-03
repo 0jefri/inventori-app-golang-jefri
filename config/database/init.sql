@@ -1,1 +1,1 @@
-CREATE DATABASE db_sakupay;
+CREATE DATABASE inventori_app;

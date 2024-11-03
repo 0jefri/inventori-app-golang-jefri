@@ -19,14 +19,12 @@ import (
 type UserController struct {
 	service service.UserService
 	auth    service.AuthService
-	// userPicture service.UserPictureService
 }
 
 func NewUserController(service service.UserService, auth service.AuthService) *UserController {
 	return &UserController{
 		service: service,
 		auth:    auth,
-		// userPicture: userPicture,
 	}
 }
 
@@ -322,75 +320,3 @@ func (ctr *UserController) Login(c *gin.Context) {
 		Token:   data,
 	})
 }
-
-// func (ctr *UserController) UploadPicture(c *gin.Context) {
-// 	id := c.Param("id")
-
-// 	userPicture := model.UserPicture{}
-
-// 	file, fileHeader, err := c.Request.FormFile("photo")
-
-// 	if err != nil {
-// 		c.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
-// 			"code":    http.StatusBadRequest,
-// 			"status":  exception.StatusBadRequest,
-// 			"message": err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	allowedExts := []string{".png", ".jpg", ".jpeg"}
-// 	ext := strings.ToLower(filepath.Ext(fileHeader.Filename))
-// 	allowed := false
-
-// 	for _, allowedExt := range allowedExts {
-// 		if ext == allowedExt {
-// 			allowed = true
-// 			break
-// 		}
-// 	}
-
-// 	if !allowed {
-// 		c.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
-// 			"code":    http.StatusBadRequest,
-// 			"status":  exception.StatusBadRequest,
-// 			"message": exception.ErrInvalidExtension.Error(),
-// 		})
-// 		return
-
-// 	}
-// 	userPicture.ID = common.GenerateUUID()
-// 	userPicture.UserID = id
-
-// 	err = ctr.userPicture.UploadUserPicture(&userPicture, &file, ext)
-// 	if err != nil {
-// 		c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-// 			Code:    http.StatusInternalServerError,
-// 			Status:  exception.StatusInternalServer,
-// 			Message: err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, dto.Response{
-// 		Code:    http.StatusOK,
-// 		Status:  exception.StatusSuccess,
-// 		Message: "File Uploaded",
-// 	})
-// }
-
-// func (ctr *UserController) DownloadPicture(c *gin.Context) {
-// 	id := c.Param("id")
-// 	userPic, err := ctr.userPicture.FindUserPictureById(id)
-// 	if err != nil {
-
-// 		c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
-// 			Code:    http.StatusInternalServerError,
-// 			Status:  exception.StatusInternalServer,
-// 			Message: err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	c.FileAttachment(userPic.FileLocation, filepath.Base(userPic.FileLocation))
-// }

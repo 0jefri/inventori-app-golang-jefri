@@ -23,8 +23,7 @@ type Database struct {
 
 // File Config
 type File struct {
-	Path            string `mapstructure:"path"`
-	UserPicturePath string `mapstructure:"picture_path"`
+	Path string `mapstructure:"path"`
 }
 
 // Token Config

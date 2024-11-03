@@ -6,12 +6,9 @@ import (
 	"github.com/inventori-app-jeff/internal/app/delivery/controller"
 	"github.com/inventori-app-jeff/internal/app/delivery/middleware"
 	"github.com/inventori-app-jeff/internal/app/manager"
-	// "github.com/sirupsen/logrus"
 )
 
 func SetupRouter(router *gin.Engine) error {
-
-	// router.Use(middleware.LogRequestMiddleware(logrus.New()))
 
 	infraManager := manager.NewInfraManager(config.Cfg)
 	serviceManager := manager.NewRepoManager(infraManager)
@@ -30,15 +27,15 @@ func SetupRouter(router *gin.Engine) error {
 
 	v1 := router.Group("/api/v1")
 	{
-		sakupay := v1.Group("/inventori")
+		inventori := v1.Group("/inventori")
 		{
-			auth := sakupay.Group("/auth")
+			auth := inventori.Group("/auth")
 			{
 				auth.POST("/register", userController.Registration)
 				auth.POST("/login", userController.Login)
 			}
 
-			users := sakupay.Group("/users", middleware.AuthMiddleware())
+			users := inventori.Group("/users", middleware.AuthMiddleware())
 			{
 				users.GET("/", userController.FindAllUsers)
 				users.GET("/:id", userController.FindUser)
