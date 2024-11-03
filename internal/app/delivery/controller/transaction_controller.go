@@ -151,11 +151,9 @@ func (ctr *transactionController) SendProduct(c *gin.Context) {
 func (c *transactionController) ListTransactions(ctx *gin.Context) {
 	transactions, err := c.service.ListTransactions()
 	if err != nil {
-		// Mengembalikan HTTP 500 jika terjadi error saat mengambil transaksi
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve transactions"})
 		return
 	}
 
-	// Mengembalikan daftar transaksi dengan status HTTP 200
 	ctx.JSON(http.StatusOK, gin.H{"transactions": transactions})
 }

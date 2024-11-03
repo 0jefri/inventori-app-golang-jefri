@@ -44,7 +44,6 @@ func (s *transactionService) ReceiveTransaction(payload *model.Transaction) (*mo
 }
 
 func (s *transactionService) CreateSendTransaction(payload *model.Transaction) (*model.Transaction, error) {
-	// Validasi input transaksi
 	if payload == nil {
 		return nil, errors.New("transaction payload cannot be nil")
 	}
@@ -55,20 +54,18 @@ func (s *transactionService) CreateSendTransaction(payload *model.Transaction) (
 		return nil, errors.New("product ID is required")
 	}
 
-	// Memanggil repository untuk membuat transaksi pengiriman
 	transaction, err := s.repo.CreateSendTransaction(payload)
 	if err != nil {
-		return nil, err // Mengembalikan error jika ada kesalahan di repository
+		return nil, err
 	}
 
 	return transaction, nil
 }
 
 func (s *transactionService) ListTransactions() ([]*model.Transaction, error) {
-	// Memanggil metode List pada repository untuk mengambil semua transaksi
 	transactions, err := s.repo.List()
 	if err != nil {
-		return nil, err // Mengembalikan error jika terdapat kesalahan pada repository
+		return nil, err
 	}
 
 	return transactions, nil

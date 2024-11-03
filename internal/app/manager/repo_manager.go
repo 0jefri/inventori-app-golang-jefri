@@ -8,12 +8,6 @@ type RepoManager interface {
 	UserRepo() repository.UserRepository
 	ProductRepo() repository.ProductRepository
 	TransactionRepo() repository.TransactionRepository
-	// BillRepo() repository.BillRepository
-	// ContactRepo() repository.ContactRepository
-	// FileRepo() repository.FileRepository
-	// UserPictureRepo() repository.UserPictureRepository
-	// CardRepo() repository.CardRepository
-	// BillDetailsRepo() repository.BillDetailsRepository
 }
 
 type repoManager struct {
@@ -37,27 +31,3 @@ func (m *repoManager) ProductRepo() repository.ProductRepository {
 func (m *repoManager) TransactionRepo() repository.TransactionRepository {
 	return repository.NewTransactionRepository(m.infraManager.Conn())
 }
-
-// func (m *repoManager) BillRepo() repository.BillRepository {
-// 	return repository.NewBillRepository(m.infraManager.Conn())
-// }
-
-// func (m *repoManager) ContactRepo() repository.ContactRepository {
-// 	return repository.NewContactRepository(m.infraManager.Conn())
-// }
-
-// func (m *repoManager) FileRepo() repository.FileRepository {
-// 	return repository.NewFileRepository(config.Cfg.File.UserPicturePath)
-// }
-
-// func (m *repoManager) UserPictureRepo() repository.UserPictureRepository {
-// 	return repository.NewUserPictureRepository(m.infraManager.Conn())
-// }
-
-// func (m *repoManager) CardRepo() repository.CardRepository {
-// 	return repository.NewCardRepository(m.infraManager.Conn())
-// }
-
-// func (m *repoManager) BillDetailsRepo() repository.BillDetailsRepository {
-// 	return repository.NewBillDetailsRepository(m.infraManager.Conn())
-// }
