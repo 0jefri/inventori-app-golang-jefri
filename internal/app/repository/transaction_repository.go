@@ -57,6 +57,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/inventori-app-jeff/internal/model"
 	"github.com/inventori-app-jeff/utils/constants"
 	"gorm.io/gorm"
@@ -66,6 +68,7 @@ type TransactionRepository interface {
 	CreateReceiveTransaction(payload *model.Transaction) (*model.Transaction, error)
 	CreateSendTransaction(payload *model.Transaction) (*model.Transaction, error)
 	FindByID(id string) (*model.Product, error)
+	List() ([]*model.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -140,28 +143,50 @@ func (r *transactionRepository) CreateSendTransaction(payload *model.Transaction
 		Timestamp:       payload.Timestamp,
 	}
 
-	r.db.Transaction(func(tx *gorm.DB) error {
+	err := r.db.Transaction(func(tx *gorm.DB) error {
 		product := model.Product{}
 
-		if transaction.TransactionType == "sendProduct" {
-			if err := tx.Model(&product).Where(constants.WHERE_BY_PRODUCT_ID, transaction.ProductID).Select("quantity").First(&product).Error; err != nil {
-				return gorm.ErrInvalidTransaction
+		// Validasi tipe transaksi
+		if transaction.TransactionType == constants.SendProductType { // Pastikan menggunakan constant yang benar
+			// Ambil data produk berdasarkan ProductID
+			if err := tx.Model(&product).Where("id = ?", transaction.ProductID).Select("quantity").First(&product).Error; err != nil {
+				return err
 			}
 
+			// Kurangi quantity produk
+			if product.Quantity < int(transaction.Amount) {
+				return errors.New("insufficient product quantity") // Menangani jika jumlah produk tidak mencukupi
+			}
 			product.Quantity -= int(transaction.Amount)
 
-			if err := tx.Model(&product).Where(constants.WHERE_BY_PRODUCT_ID, transaction.ProductID).Select("quantity").Updates(&product).Error; err != nil {
-				return gorm.ErrInvalidTransaction
+			// Update quantity produk
+			if err := tx.Model(&product).Where("id = ?", transaction.ProductID).Update("quantity", product.Quantity).Error; err != nil {
+				return err
 			}
 
+			// Simpan transaksi ke database
 			if err := tx.Create(&transaction).Error; err != nil {
-				return gorm.ErrInvalidTransaction
+				return err
 			}
 		} else {
-			return gorm.ErrInvalidTransaction
+			return errors.New("invalid transaction type") // Error untuk tipe transaksi yang tidak valid
 		}
 		return nil
 	})
 
+	if err != nil {
+		return nil, err // Return error jika transaksi gagal
+	}
+
 	return &transaction, nil
+}
+
+func (r *transactionRepository) List() ([]*model.Transaction, error) {
+	transactions := []*model.Transaction{}
+
+	if err := r.db.Find(&transactions).Error; err != nil {
+		return nil, gorm.ErrRecordNotFound
+	}
+
+	return transactions, nil
 }

@@ -57,6 +57,7 @@ func SetupRouter(router *gin.Engine) error {
 				// Transaction
 				users.POST("/product/:id/transactions/receive", transactionController.ReceiveProduct)
 				users.POST("/product/:id/transactions/send", transactionController.SendProduct)
+				users.GET("/product/transactions", transactionController.ListTransactions)
 
 				// Contact
 				// users.POST("/:id/contacts", contactController.AddContact)

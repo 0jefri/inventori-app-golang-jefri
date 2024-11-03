@@ -12,6 +12,7 @@ import (
 type TransactionService interface {
 	ReceiveTransaction(payload *model.Transaction) (*model.Transaction, error)
 	CreateSendTransaction(payload *model.Transaction) (*model.Transaction, error)
+	ListTransactions() ([]*model.Transaction, error)
 }
 
 type transactionService struct {
@@ -61,4 +62,14 @@ func (s *transactionService) CreateSendTransaction(payload *model.Transaction) (
 	}
 
 	return transaction, nil
+}
+
+func (s *transactionService) ListTransactions() ([]*model.Transaction, error) {
+	// Memanggil metode List pada repository untuk mengambil semua transaksi
+	transactions, err := s.repo.List()
+	if err != nil {
+		return nil, err // Mengembalikan error jika terdapat kesalahan pada repository
+	}
+
+	return transactions, nil
 }
