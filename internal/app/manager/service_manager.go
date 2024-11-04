@@ -9,6 +9,7 @@ type ServiceManager interface {
 	AuthService() service.AuthService
 	ProductService() service.ProductService
 	TransactionService() service.TransactionService
+	CategoryService() service.CategoryService
 }
 
 type serviceManager struct {
@@ -35,4 +36,8 @@ func (m *serviceManager) ProductService() service.ProductService {
 
 func (m *serviceManager) TransactionService() service.TransactionService {
 	return service.NewTransactionService(m.repoManager.TransactionRepo(), m.repoManager.ProductRepo())
+}
+
+func (m *serviceManager) CategoryService() service.CategoryService {
+	return service.NewCategoryService(m.repoManager.CategoryRepo(), m.repoManager.ProductRepo())
 }

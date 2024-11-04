@@ -26,18 +26,18 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 
 func (r *productRepository) Create(payload *model.Product) (*model.Product, error) {
 
-	contact := model.Product{
+	product := model.Product{
 		ID:       payload.ID,
 		Name:     payload.Name,
 		Quantity: payload.Quantity,
 		Price:    payload.Price,
 	}
 
-	if err := r.db.Create(&contact).Error; err != nil {
+	if err := r.db.Create(&product).Error; err != nil {
 		return nil, exception.ErrFailedCreate
 	}
 
-	return &contact, nil
+	return &product, nil
 }
 
 func (r *productRepository) Paging(requestPaging dto.PaginationParam, queries ...string) ([]*model.Product, *dto.Paging, error) {

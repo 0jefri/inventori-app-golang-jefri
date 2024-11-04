@@ -21,6 +21,9 @@ func SetupRouter(router *gin.Engine) error {
 	// Transaction Controller
 	transactionController := controller.NewTransactionController(repoManager.TransactionService())
 
+	// Category Controller
+	categoryController := controller.NewCategoryController(repoManager.CategoryService())
+
 	v1 := router.Group("/api/v1")
 	{
 		inventori := v1.Group("/inventori")
@@ -50,6 +53,10 @@ func SetupRouter(router *gin.Engine) error {
 				users.POST("/product/:id/transactions/receive", transactionController.ReceiveProduct)
 				users.POST("/product/:id/transactions/send", transactionController.SendProduct)
 				users.GET("/product/transactions", transactionController.ListTransactions)
+
+				//category
+				users.POST("/product/:id/category", categoryController.AddCategory)
+				// users.GET("/product/:id/categorys", categoryController.FindAllCategory)
 			}
 		}
 	}

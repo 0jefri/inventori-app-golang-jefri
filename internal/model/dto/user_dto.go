@@ -13,9 +13,5 @@ type UserResponse struct {
 	LastName         string    `json:"lastName,omitempty"`
 	PhoneNumber      string    `json:"phoneNumber,omitempty"`
 	RegistrationDate time.Time `json:"registrationDate,omitempty"`
-	// ProfilePicture   []byte          `json:"profilePicture,omitempty"`
-	LastLogin time.Time `json:"lastLogin,omitempty"`
-	// Wallet           model.Wallet    `json:"wallet,omitempty"`
-	// Cards            []model.Card    `json:"cards,omitempty"`
-	// Contacts         []model.Contact `json:"contacts,omitempty"`
+	LastLogin        time.Time `json:"lastLogin,omitempty"`
 }

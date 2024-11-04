@@ -8,6 +8,7 @@ type RepoManager interface {
 	UserRepo() repository.UserRepository
 	ProductRepo() repository.ProductRepository
 	TransactionRepo() repository.TransactionRepository
+	CategoryRepo() repository.CategoryRepository
 }
 
 type repoManager struct {
@@ -30,4 +31,8 @@ func (m *repoManager) ProductRepo() repository.ProductRepository {
 
 func (m *repoManager) TransactionRepo() repository.TransactionRepository {
 	return repository.NewTransactionRepository(m.infraManager.Conn())
+}
+
+func (m *repoManager) CategoryRepo() repository.CategoryRepository {
+	return repository.NewCategoryRepository(m.infraManager.Conn())
 }
