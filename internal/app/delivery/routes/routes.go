@@ -47,7 +47,7 @@ func SetupRouter(router *gin.Engine) error {
 				users.GET("/products/", productController.FindAllProducts)
 				users.DELETE("/product/:id", productController.DeleteProduct)
 				users.PUT("/product/:id", productController.UpdateProduct)
-				users.GET("/products", productController.FindProductByName)
+				users.GET("/products/:name", productController.FindProductByName)
 
 				// Transaction
 				users.POST("/product/:id/transactions/receive", transactionController.ReceiveProduct)
