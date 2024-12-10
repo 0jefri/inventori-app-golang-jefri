@@ -6,9 +6,12 @@ import (
 	"github.com/inventori-app-jeff/internal/app/delivery/controller"
 	"github.com/inventori-app-jeff/internal/app/delivery/middleware"
 	"github.com/inventori-app-jeff/internal/app/manager"
+	"github.com/sirupsen/logrus"
 )
 
 func SetupRouter(router *gin.Engine) error {
+
+	router.Use(middleware.LogRequestMiddleware(logrus.New()))
 
 	infraManager := manager.NewInfraManager(config.Cfg)
 	serviceManager := manager.NewRepoManager(infraManager)
